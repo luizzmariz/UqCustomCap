@@ -35,8 +35,52 @@ body {
   max-height: 100%;
 }
 
+.cap-canvas {
+  position: absolute;
+  inset: 0;
+}
+
 .cap-view svg {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+/* Direct-manipulation overlay for the logo (front view). */
+.cap-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.logo-box {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1.5px dashed rgba(37, 99, 235, 0.9);
+  border-radius: 4px;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.logo-box:active {
+  cursor: grabbing;
+}
+
+.logo-handle {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #2563eb;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.logo-handle-br {
+  right: -9px;
+  bottom: -9px;
+  cursor: nwse-resize;
 }

@@ -54,6 +54,7 @@ export const pt = {
   'logo.rotation': 'Rotação',
   'logo.offsetX': 'Horizontal',
   'logo.offsetY': 'Vertical',
+  'logo.dragHint': 'Arraste o logo no boné para mover e use o canto azul para redimensionar.',
   'logo.frontOnly': 'O logo é aplicado na frente do boné.',
 
   'actions.reset': 'Restaurar padrão',

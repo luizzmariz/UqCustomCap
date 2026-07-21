@@ -10,9 +10,7 @@ export function LogoUploader() {
   const inputRef = useRef<HTMLInputElement>(null);
   const logo = useCustomizerStore((s) => s.logo);
   const setLogoFile = useCustomizerStore((s) => s.setLogoFile);
-  const setLogoScale = useCustomizerStore((s) => s.setLogoScale);
   const setLogoRotation = useCustomizerStore((s) => s.setLogoRotation);
-  const setLogoOffset = useCustomizerStore((s) => s.setLogoOffset);
   const clearLogo = useCustomizerStore((s) => s.clearLogo);
   const setView = useCustomizerStore((s) => s.setView);
 
@@ -26,7 +24,6 @@ export function LogoUploader() {
   };
 
   const toDeg = (rad: number) => `${Math.round((rad * 180) / Math.PI)}°`;
-  const toPct = (n: number) => `${Math.round(n * 100)}%`;
 
   return (
     <div>
@@ -55,15 +52,10 @@ export function LogoUploader() {
             </div>
           </div>
 
-          <Slider
-            label={t('logo.size')}
-            min={0.3}
-            max={2}
-            step={0.01}
-            value={logo.scale}
-            onChange={setLogoScale}
-            format={toPct}
-          />
+          <p className="rounded-lg bg-blue-50 p-3 text-xs leading-relaxed text-blue-700">
+            {t('logo.dragHint')}
+          </p>
+
           <Slider
             label={t('logo.rotation')}
             min={-Math.PI}
@@ -72,22 +64,6 @@ export function LogoUploader() {
             value={logo.rotation}
             onChange={setLogoRotation}
             format={toDeg}
-          />
-          <Slider
-            label={t('logo.offsetX')}
-            min={-0.25}
-            max={0.25}
-            step={0.005}
-            value={logo.offset[0]}
-            onChange={(v) => setLogoOffset([v, logo.offset[1]])}
-          />
-          <Slider
-            label={t('logo.offsetY')}
-            min={-0.25}
-            max={0.25}
-            step={0.005}
-            value={logo.offset[1]}
-            onChange={(v) => setLogoOffset([logo.offset[0], v])}
           />
         </div>
       ) : (

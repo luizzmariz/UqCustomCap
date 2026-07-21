@@ -55,6 +55,7 @@ export const en: Record<TranslationKey, string> = {
   'logo.rotation': 'Rotation',
   'logo.offsetX': 'Horizontal',
   'logo.offsetY': 'Vertical',
+  'logo.dragHint': 'Drag the logo on the cap to move it, and use the blue corner to resize.',
   'logo.frontOnly': 'The logo is applied on the front of the cap.',
 
   'actions.reset': 'Reset to default',
