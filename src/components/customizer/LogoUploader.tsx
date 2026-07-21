@@ -14,10 +14,14 @@ export function LogoUploader() {
   const setLogoRotation = useCustomizerStore((s) => s.setLogoRotation);
   const setLogoOffset = useCustomizerStore((s) => s.setLogoOffset);
   const clearLogo = useCustomizerStore((s) => s.clearLogo);
+  const setView = useCustomizerStore((s) => s.setView);
 
   const onPick = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setLogoFile(file);
+    if (file) {
+      setLogoFile(file);
+      setView('frente'); // the logo is shown on the front panel
+    }
     e.target.value = '';
   };
 
@@ -71,16 +75,16 @@ export function LogoUploader() {
           />
           <Slider
             label={t('logo.offsetX')}
-            min={-0.5}
-            max={0.5}
+            min={-0.25}
+            max={0.25}
             step={0.005}
             value={logo.offset[0]}
             onChange={(v) => setLogoOffset([v, logo.offset[1]])}
           />
           <Slider
             label={t('logo.offsetY')}
-            min={-0.4}
-            max={0.5}
+            min={-0.25}
+            max={0.25}
             step={0.005}
             value={logo.offset[1]}
             onChange={(v) => setLogoOffset([logo.offset[0], v])}
@@ -95,7 +99,7 @@ export function LogoUploader() {
         </div>
       )}
 
-      <p className="mt-3 text-xs text-slate-400">{t('logo.hint')}</p>
+      <p className="mt-3 text-xs text-slate-400">{t('logo.frontOnly')}</p>
     </div>
   );
 }

@@ -1,9 +1,9 @@
 {
   "name": "uq-custom-cap",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "UQ Bonés — plataforma web de customização de bonés com pré-visualização 3D.",
+  "description": "UQ Bonés — plataforma web de customização de bonés com pré-visualização em vetores (SVG).",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -13,11 +13,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\""
   },
   "dependencies": {
-    "@react-three/drei": "^9.114.0",
-    "@react-three/fiber": "^8.17.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "three": "^0.169.0",
     "zustand": "^5.0.1"
   },
   "devDependencies": {
@@ -25,7 +22,6 @@
     "@types/node": "^22.8.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@types/three": "^0.169.0",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.13.0",

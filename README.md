@@ -1,11 +1,12 @@
-# UQ Bonés — Customizador de Bonés 3D
+# UQ Bonés — Customizador de Bonés (Vetores/SVG)
 
-Plataforma web da **UQ Bonés** para personalizar bonés com pré-visualização 3D
-no navegador (desktop e mobile): escolher o modelo, trocar a cor de cada parte
-e enviar um logo para ver aplicado em tempo real.
+Plataforma web da **UQ Bonés** para personalizar bonés com pré-visualização em
+**vetores (SVG)** no navegador (desktop e mobile): escolher o modelo, alternar
+entre as vistas (frente/lado/trás), trocar a cor de cada parte e enviar um logo
+aplicado na frente — tudo em tempo real.
 
 > **Idiomas:** Português 🇧🇷 e Inglês 🇺🇸 (seletor no topo).
-> **Publicação:** GitHub Pages em `https://luizzmariz.github.io/UqCustomCap/`.
+> **Publicação:** GitHub Pages (branch `gh-pages`) em `https://luizzmariz.github.io/UqCustomCap/`.
 
 ---
 
@@ -16,74 +17,54 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
-Para testar o build de produção (com o base path `/UqCustomCap/`):
-
-```bash
-npm run build
-npm run preview
-```
-
+Build de produção (base path `/UqCustomCap/`): `npm run build && npm run preview`.
 Outros scripts: `npm run typecheck`, `npm run lint`, `npm run format`.
 
 ## Stack
 
 - **React + Vite + TypeScript**
-- **three** + **@react-three/fiber** + **@react-three/drei** (renderização 3D)
 - **Zustand** (estado) · **Tailwind CSS** (UI)
+- Os bonés são **SVGs** renderizados inline; cada parte é colorida via variáveis CSS.
 
-## Como o projeto está organizado
+## Como funciona a coloração por parte
+
+Os 3 modelos (Americano, Baseball, Trucker) têm 3 vistas cada (frente, lado,
+trás) — 9 SVGs em `src/caps/`. Esses SVGs são **desenhos técnicos**; um passo de
+pré-processamento (`tools/tag-caps.mjs`) classifica cada forma preenchida pela
+sua posição geométrica e adiciona `data-part="crown|brim|button|mesh"`, além de
+um bloco de estilo que liga cada parte a uma variável CSS
+(`--c-crown`, `--c-brim`, `--c-button`, `--c-mesh`).
+
+Em runtime, `src/cap/CapView.tsx` inclui o SVG e define essas variáveis a partir
+do estado (`src/store/customizerStore.ts`). O logo é sobreposto como `<img>`
+posicionado em porcentagem sobre o painel frontal (`logoAnchor` em
+`src/config/caps.ts`).
 
 | Caminho | Responsabilidade |
 | --- | --- |
-| `src/config/capModels.ts` | ⭐ Config data-driven das partes — **fonte única da verdade**. |
-| `src/store/customizerStore.ts` | Estado (cores por parte, logo, idioma). |
-| `src/scene/` | Cena 3D: `CapCanvas`, `CapModel` (roteador), `PlaceholderCap`, `GltfCap`, `LogoDecal`, `SceneLighting`. |
-| `src/components/` | `customizer/`, `landing/`, `ui/`. |
-| `src/i18n/` | Dicionários PT/EN e `useT()`. |
+| `src/config/caps.ts` | Modelos, vistas, partes e âncora do logo. |
+| `src/caps/*.svg` + `src/caps/index.ts` | SVGs marcados e seu carregamento. |
+| `src/cap/CapView.tsx` | Renderiza o SVG + cores por variável CSS + logo. |
+| `src/store/customizerStore.ts` | Estado (cores, modelo, vista, logo, idioma). |
+| `tools/tag-caps.mjs` | Pré-processador que marca as partes (roda com `playwright-core`). |
 
-O boné exibido hoje é um **placeholder procedural simples** (`PlaceholderCap`),
-usado só até chegarem os modelos reais. A cena troca automaticamente para o
-carregador de `.glb` (`GltfCap`) assim que um modelo real é configurado.
+### Reprocessar / adicionar SVGs
 
----
-
-## Adicionando um modelo `.glb` real (drop-in)
-
-1. Exporte/coloque o arquivo em `public/models/`, por exemplo
-   `public/models/bone-americano.glb`.
-2. Em `src/config/capModels.ts`, no modelo correspondente:
-   - troque `src: 'placeholder'` por
-     `` src: `${import.meta.env.BASE_URL}models/bone-americano.glb` ``
-     (nunca use caminho absoluto `/models/...` — quebra sob o base path do Pages);
-   - ajuste o `nodeName` de cada parte para bater com os nomes das malhas do arquivo;
-   - ajuste `logoAnchor` (posição/rotação/escala do logo na frente) e `camera` se necessário.
-3. Pronto — a interface se regenera a partir da config; nenhum componente muda.
-
-### Especificação para exportar os modelos (para quem cria o `.glb`)
-
-- Cada parte recolorível deve ser uma **malha separada e nomeada**:
-  `Crown` (copa), `Brim` (aba), `Button` (botão), `Eyelets` (ilhoses),
-  `Sweatband` (faixa interna).
-- Formato **glTF binário (`.glb`)**, de preferência com **compressão Draco**.
-- Texturas de no máximo **1024px**; alvo de **&lt; 2–3 MB** por modelo.
-- Deixe a **frente da copa voltada para +Z** (para o logo cair no lugar certo).
-
----
+Os SVGs de origem (do Illustrator) ficam em `tools/caps-source/`. Para regerar os
+marcados, ajuste `tools/tag-caps.mjs` se necessário e rode-o com um navegador
+headless (via `playwright-core`), gerando os arquivos em `src/caps/`. A
+classificação usa bounding-boxes: copa (região superior), aba (inferior), botão
+(topo), tela (Trucker — laterais/traseira).
 
 ## Deploy (GitHub Pages)
 
-O deploy é automático via GitHub Actions (`.github/workflows/deploy.yml`) a cada
-push na branch `main`.
-
-Passo único de configuração no GitHub: **Settings → Pages → Source = GitHub Actions**.
-
-Se um dia for usado um repositório dedicado `luizzmariz.github.io`, basta trocar
-`base` em `vite.config.ts` de `'/UqCustomCap/'` para `'/'`.
+O site é publicado a partir do branch **`gh-pages`** (Settings → Pages → Source =
+*Deploy from a branch* → `gh-pages` / root). Para atualizar, rode `npm run build`
+e publique o conteúdo de `dist/` no branch `gh-pages`.
 
 ## Roadmap
 
-- **Fase 1 (atual):** customizador 3D funcional com placeholder, cores por parte,
-  upload de logo, PT/EN, responsivo, deploy.
-- **Fase 2:** conteúdo de marca/landing (imagens reais, produtos, sobre).
-- **Fase 3:** modelos `.glb` reais.
-- **Fase 4:** salvar/compartilhar, exportar imagem, orçamento via WhatsApp.
+- **Feito:** customizador em vetores — 3 modelos × 3 vistas, cor por parte,
+  upload de logo (frente), PT/EN, responsivo.
+- **Próximo:** arrastar/redimensionar o logo direto no boné, salvar/compartilhar
+  configuração por link, exportar imagem, e orçamento via WhatsApp.

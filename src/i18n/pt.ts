@@ -1,10 +1,10 @@
 export const pt = {
   'app.name': 'UQ Bonés',
 
-  'hero.badge': 'Pré-visualização 3D',
-  'hero.title': 'Personalize seu boné em 3D',
+  'hero.badge': 'Pré-visualização em tempo real',
+  'hero.title': 'Personalize seu boné online',
   'hero.subtitle':
-    'Escolha o modelo, troque a cor de cada parte e adicione o seu logo. Veja o resultado em tempo real, no computador ou no celular.',
+    'Escolha o modelo, troque a cor de cada parte e adicione o seu logo. Veja o resultado em tempo real — frente, lado e trás — no computador ou no celular.',
   'hero.cta': 'Criar meu boné',
 
   'how.title': 'Como funciona',
@@ -22,9 +22,18 @@ export const pt = {
   'tab.logo': 'Logo',
   'tab.model': 'Modelo',
 
+  'view.frente': 'Frente',
+  'view.lado': 'Lado',
+  'view.tras': 'Trás',
+
+  'model.americano': 'Americano',
+  'model.baseball': 'Baseball',
+  'model.trucker': 'Trucker',
+
   'part.crown': 'Copa',
   'part.brim': 'Aba',
   'part.button': 'Botão',
+  'part.mesh': 'Tela',
   'part.eyelets': 'Ilhoses',
   'part.sweatband': 'Faixa interna',
 
@@ -45,6 +54,7 @@ export const pt = {
   'logo.rotation': 'Rotação',
   'logo.offsetX': 'Horizontal',
   'logo.offsetY': 'Vertical',
+  'logo.frontOnly': 'O logo é aplicado na frente do boné.',
 
   'actions.reset': 'Restaurar padrão',
 

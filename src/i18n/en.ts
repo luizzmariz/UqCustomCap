@@ -3,10 +3,10 @@ import type { TranslationKey } from './pt';
 export const en: Record<TranslationKey, string> = {
   'app.name': 'UQ Bonés',
 
-  'hero.badge': '3D preview',
-  'hero.title': 'Customize your cap in 3D',
+  'hero.badge': 'Real-time preview',
+  'hero.title': 'Customize your cap online',
   'hero.subtitle':
-    'Choose the model, change the color of each part and add your logo. See the result in real time, on desktop or mobile.',
+    'Choose the model, change the color of each part and add your logo. See the result in real time — front, side and back — on desktop or mobile.',
   'hero.cta': 'Create my cap',
 
   'how.title': 'How it works',
@@ -24,9 +24,18 @@ export const en: Record<TranslationKey, string> = {
   'tab.logo': 'Logo',
   'tab.model': 'Model',
 
+  'view.frente': 'Front',
+  'view.lado': 'Side',
+  'view.tras': 'Back',
+
+  'model.americano': 'American',
+  'model.baseball': 'Baseball',
+  'model.trucker': 'Trucker',
+
   'part.crown': 'Crown',
   'part.brim': 'Brim',
   'part.button': 'Button',
+  'part.mesh': 'Mesh',
   'part.eyelets': 'Eyelets',
   'part.sweatband': 'Sweatband',
 
@@ -46,6 +55,7 @@ export const en: Record<TranslationKey, string> = {
   'logo.rotation': 'Rotation',
   'logo.offsetX': 'Horizontal',
   'logo.offsetY': 'Vertical',
+  'logo.frontOnly': 'The logo is applied on the front of the cap.',
 
   'actions.reset': 'Reset to default',
 
