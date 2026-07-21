@@ -35,15 +35,8 @@ body {
   max-height: 100%;
 }
 
-.cap-svg,
-.cap-svg svg {
+.cap-view svg {
   display: block;
   width: 100%;
   height: 100%;
-}
-
-.cap-logo {
-  position: absolute;
-  pointer-events: none;
-  user-select: none;
 }

@@ -69,6 +69,20 @@ for (const name of files) {
       const part = classify(cx, cy, ra, rw, isTexture(el));
       if (part) el.setAttribute('data-part', part);
     }
+    // Mark the largest front-panel shape so the logo can be clipped to it.
+    if (view === 'Frente') {
+      let best = null;
+      let bestArea = 0;
+      for (const el of svg.querySelectorAll('[data-part="copaFrente"]')) {
+        const b = el.getBBox();
+        const area = b.width * b.height;
+        if (area > bestArea) {
+          bestArea = area;
+          best = el;
+        }
+      }
+      if (best) best.setAttribute('id', 'frontPanel');
+    }
     return svg.outerHTML;
   }, { model, view });
   const withCss = tagged.replace('</style>', PART_CSS + '</style>');
