@@ -5,16 +5,16 @@ import { COLOR_PRESETS } from '../../lib/colors';
 import { useT } from '../../i18n';
 import { cn } from '../../lib/cn';
 
-export function ColorSwatchRow({ part }: { part: PartId }) {
+export function ColorSwatchRow({ part, labelKey }: { part: PartId; labelKey?: string }) {
   const t = useT();
   const color = useCustomizerStore((s) => s.partColors[part]);
   const setPartColor = useCustomizerStore((s) => s.setPartColor);
-  const labelKey = PARTS[part].labelKey;
+  const label = labelKey ?? PARTS[part].labelKey;
 
   return (
     <div className="py-3">
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-sm font-medium text-slate-700">{t(labelKey)}</span>
+        <span className="text-sm font-medium text-slate-700">{t(label)}</span>
         <label
           className="relative flex h-7 w-7 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-slate-300 shadow-sm"
           style={{ backgroundColor: color }}
@@ -24,7 +24,7 @@ export function ColorSwatchRow({ part }: { part: PartId }) {
             value={color}
             onChange={(e) => setPartColor(part, e.target.value)}
             className="absolute inset-0 cursor-pointer opacity-0"
-            aria-label={t(labelKey)}
+            aria-label={t(label)}
           />
         </label>
       </div>

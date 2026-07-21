@@ -31,9 +31,18 @@ Outros scripts: `npm run typecheck`, `npm run lint`, `npm run format`.
 Os 3 modelos (Americano, Baseball, Trucker) têm 3 vistas cada (frente, lado,
 trás) — 9 SVGs em `src/caps/`. Esses SVGs são **desenhos técnicos**; um passo de
 pré-processamento (`tools/tag-caps.mjs`) classifica cada forma preenchida pela
-sua posição geométrica e adiciona `data-part="crown|brim|button|mesh"`, além de
-um bloco de estilo que liga cada parte a uma variável CSS
-(`--c-crown`, `--c-brim`, `--c-button`, `--c-mesh`).
+sua posição geométrica e adiciona `data-part`, além de um bloco de estilo que
+liga cada parte a uma variável CSS. As partes são:
+
+| Parte | `data-part` | variável CSS |
+| --- | --- | --- |
+| Copa (frente) | `copaFrente` | `--c-copa-frente` |
+| Copa (lados/trás) — **Tela** no Trucker | `copaLadosTras` | `--c-copa-lados` |
+| Aba (cima) | `abaCima` | `--c-aba-cima` |
+| Aba (baixo) | `abaBaixo` | `--c-aba-baixo` |
+| Botão | `botao` | `--c-botao` |
+
+As cores disponíveis (paleta da marca) ficam em `src/lib/colors.ts`.
 
 Em runtime, `src/cap/CapView.tsx` inclui o SVG e define essas variáveis a partir
 do estado (`src/store/customizerStore.ts`). O logo é sobreposto como `<img>`
@@ -53,8 +62,8 @@ posicionado em porcentagem sobre o painel frontal (`logoAnchor` em
 Os SVGs de origem (do Illustrator) ficam em `tools/caps-source/`. Para regerar os
 marcados, ajuste `tools/tag-caps.mjs` se necessário e rode-o com um navegador
 headless (via `playwright-core`), gerando os arquivos em `src/caps/`. A
-classificação usa bounding-boxes: copa (região superior), aba (inferior), botão
-(topo), tela (Trucker — laterais/traseira).
+classificação usa bounding-boxes: painel frontal vs. laterais/traseira, topo vs.
+baixo da aba, botão no topo. No Trucker, as laterais/traseira são a tela.
 
 ## Deploy (GitHub Pages)
 

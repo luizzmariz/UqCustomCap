@@ -1,5 +1,5 @@
 import { useActiveModel } from '../../store/customizerStore';
-import { PART_ORDER } from '../../config/caps';
+import { PART_ORDER, PARTS } from '../../config/caps';
 import { ColorSwatchRow } from './ColorSwatchRow';
 import { useT } from '../../i18n';
 
@@ -14,7 +14,11 @@ export function PartColorList() {
       <p className="mt-0.5 text-xs text-slate-500">{t('controls.colorsHint')}</p>
       <div className="mt-1 divide-y divide-slate-100">
         {parts.map((part) => (
-          <ColorSwatchRow key={part} part={part} />
+          <ColorSwatchRow
+            key={part}
+            part={part}
+            labelKey={model.labelOverrides?.[part] ?? PARTS[part].labelKey}
+          />
         ))}
       </div>
     </div>

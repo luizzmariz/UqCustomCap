@@ -9,10 +9,11 @@ mkdirSync(outDir, { recursive: true });
 const files = readdirSync(dir).filter((f) => f.endsWith('.svg')).sort();
 
 const PART_CSS = `
-    [data-part="crown"]{fill:var(--c-crown,#d7dade) !important}
-    [data-part="brim"]{fill:var(--c-brim,#c7cace) !important}
-    [data-part="button"]{fill:var(--c-button,#d7dade) !important}
-    [data-part="mesh"]{fill:var(--c-mesh,#eef0f2) !important}
+    [data-part="copaFrente"]{fill:var(--c-copa-frente,#d7dade) !important}
+    [data-part="copaLadosTras"]{fill:var(--c-copa-lados,#c9ccd1) !important}
+    [data-part="abaCima"]{fill:var(--c-aba-cima,#c7cace) !important}
+    [data-part="abaBaixo"]{fill:var(--c-aba-baixo,#b7bac0) !important}
+    [data-part="botao"]{fill:var(--c-botao,#d7dade) !important}
   `;
 
 const browser = await chromium.launch({ executablePath: EXE, args: ['--no-sandbox'] });
@@ -35,19 +36,26 @@ for (const name of files) {
     function isTexture(el) {
       return (el.getAttribute('class') || '').split(/\s+/).some((c) => classCount[c] > 40);
     }
-    function classify(cx, cy, ra, bot, texture) {
-      const trucker = model === 'Trucker';
+    // Regions: copaFrente | copaLadosTras (= Tela on Trucker) | abaCima | abaBaixo | botao
+    function classify(cx, cy, ra, rw, texture) {
       // button: a small structural fill near the very top (never a texture dot)
-      if (!texture && ra < 0.006 && cy < 0.06) return 'button';
-      if (view === 'Frente') return cy > 0.58 || bot > 0.80 ? 'brim' : 'crown';
-      if (view === 'Lado') {
-        if (cy > 0.62 && cx > 0.46) return 'brim';
-        if (trucker && cx < 0.47) return 'mesh';
-        return 'crown';
+      if (!texture && ra < 0.006 && cy < 0.06) return 'botao';
+      if (view === 'Frente') {
+        if (cy < 0.58) {
+          // wide full-silhouette shape = the side/back panels peeking behind;
+          // everything else (front panel + its texture) = front crown.
+          if (rw > 0.92 && ra > 0.5) return 'copaLadosTras';
+          return 'copaFrente';
+        }
+        return cy > 0.82 ? 'abaBaixo' : 'abaCima';
       }
-      // Tras
-      if (cy > 0.85) return null; // closure strap -> keep original
-      return trucker ? 'mesh' : 'crown';
+      if (view === 'Lado') {
+        if (cy > 0.62 && cx > 0.46) return cy > 0.9 ? 'abaBaixo' : 'abaCima'; // visor
+        return cx >= 0.45 ? 'copaFrente' : 'copaLadosTras'; // front dome vs back/mesh
+      }
+      // Tras: whole back crown + strap = sides/back; sweatband/closure kept
+      if (ra > 0.4 || cy > 0.88) return 'copaLadosTras';
+      return null;
     }
     for (const el of svg.querySelectorAll('path, polygon, polyline, rect, circle, ellipse')) {
       const fill = getComputedStyle(el).fill;
@@ -57,8 +65,8 @@ for (const name of files) {
       const cx = (b.x + b.width / 2) / vb.width;
       const cy = (b.y + b.height / 2) / vb.height;
       const ra = (b.width * b.height) / (vb.width * vb.height);
-      const bot = (b.y + b.height) / vb.height;
-      const part = classify(cx, cy, ra, bot, isTexture(el));
+      const rw = b.width / vb.width;
+      const part = classify(cx, cy, ra, rw, isTexture(el));
       if (part) el.setAttribute('data-part', part);
     }
     return svg.outerHTML;

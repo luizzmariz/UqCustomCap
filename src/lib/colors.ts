@@ -4,16 +4,24 @@ export interface ColorPreset {
   hex: string;
 }
 
-/** Quick-pick brand palette shown under each part's color control. */
+/** UQ Bonés brand palette (fixed set of available colors). */
 export const COLOR_PRESETS: ColorPreset[] = [
-  { key: 'color.royal', hex: '#2563eb' },
-  { key: 'color.navy', hex: '#1e3a8a' },
-  { key: 'color.red', hex: '#dc2626' },
-  { key: 'color.black', hex: '#111827' },
-  { key: 'color.white', hex: '#f8fafc' },
-  { key: 'color.gray', hex: '#6b7280' },
-  { key: 'color.green', hex: '#4b5320' },
-  { key: 'color.beige', hex: '#d6c7a1' },
-  { key: 'color.yellow', hex: '#f59e0b' },
-  { key: 'color.pink', hex: '#ec4899' },
+  { key: 'color.branco', hex: '#eaeaea' },
+  { key: 'color.cinza', hex: '#727272' },
+  { key: 'color.preto', hex: '#111111' },
+  { key: 'color.vermelho', hex: '#c12121' },
+  { key: 'color.rosa', hex: '#d884c8' },
+  { key: 'color.vinho', hex: '#51132c' },
+  { key: 'color.marrom', hex: '#3a2919' },
+  { key: 'color.laranja', hex: '#c6722e' },
+  { key: 'color.bege', hex: '#cebf9d' },
+  { key: 'color.verde', hex: '#48b539' },
+  { key: 'color.verdeMusgo', hex: '#253312' },
+  { key: 'color.verdeEscuro', hex: '#0c300c' },
+  { key: 'color.verdeAzulado', hex: '#2e514d' },
+  { key: 'color.azulClaro', hex: '#3660a3' },
+  { key: 'color.azulEscuro', hex: '#0b1233' },
+  { key: 'color.azulRoyal', hex: '#2626b5' },
+  { key: 'color.amarelo', hex: '#c4af33' },
+  { key: 'color.roxo', hex: '#5a28a3' },
 ];

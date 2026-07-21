@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { CSSProperties } from 'react';
 import { capSvg } from '../caps';
+import { PARTS, PART_ORDER } from '../config/caps';
 import { useActiveModel, useCustomizerStore } from '../store/customizerStore';
 
 function parseViewBox(svg: string): { w: number; h: number } {
@@ -25,14 +26,11 @@ export function CapView() {
   const svg = capSvg(model.id, view);
   const vb = useMemo(() => parseViewBox(svg), [svg]);
 
-  const wrapperStyle: CSSProperties = {
-    // CSS variables drive the [data-part] fills inside the SVG.
-    ['--c-crown' as string]: colors.crown,
-    ['--c-brim' as string]: colors.brim,
-    ['--c-button' as string]: colors.button,
-    ['--c-mesh' as string]: colors.mesh,
-    aspectRatio: `${vb.w} / ${vb.h}`,
-  };
+  // CSS variables drive the [data-part] fills inside the SVG.
+  const wrapperStyle: CSSProperties = { aspectRatio: `${vb.w} / ${vb.h}` };
+  for (const part of PART_ORDER) {
+    (wrapperStyle as Record<string, string>)[PARTS[part].cssVar] = colors[part];
+  }
 
   const showLogo = view === 'frente' && logo.url;
   const a = model.logoAnchor;
